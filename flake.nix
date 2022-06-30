@@ -152,21 +152,45 @@
 
       # LIBRARIES
 
-      libLibrary = pkgs.stdenv.mkDerivation {
-        name = "haskell-lib-lib-build";
-        src = "${self}/src/lib/lib";
-        installPhase = ''
-          echo "<<<START INSTALL PHASE>>>"
-          mkdir -p "$out/lib"
-          cp -rf * "$out/lib"
-          rm "$out/lib/hie.yaml"
-          echo "<<<COMPLETE INSTALL PHASE>>>"
-        '';
-      };
+      defineLibraryProject =
+        { groupName
+        , projectName
+        , buildDir
+        , buildArtifactsDir
+        , srcPath
+        , haskellDependencies ? (availableDependencies: [ ])
+        , localDependencies ? { }
+        , languageExtensions ? [ ]
+        , ...
+        }:
+        haskellProject.lib.defineProject
+          {
+            inherit groupName projectName buildDir buildArtifactsDir haskellDependencies localDependencies languageExtensions;
+            srcDir = "";
+          } // {
+          inherit srcPath;
+        };
+
+      defineLibProject =
+        { buildDir
+        , buildArtifactsDir
+        , groupName ? "realfolk"
+        , projectName ? "haskell-lib"
+        , ...
+        }:
+        defineLibraryProject
+          {
+            inherit groupName projectName buildDir buildArtifactsDir haskellDependencies;
+            srcPath = "${self}/src/lib/lib";
+          };
     in
     {
+      lib = {
+        inherit defineLibProject;
+      };
+
       packages = {
-        inherit ghc libLibrary;
+        inherit ghc;
         neovim = neovim.packages.${system}.default;
         ranger = ranger.packages.${system}.default;
         rnixLsp = rnixLsp.defaultPackage.${system};
