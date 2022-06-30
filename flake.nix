@@ -149,10 +149,24 @@
         inherit system;
         project = defineProject libTestsDefinition;
       };
+
+      # LIBRARIES
+
+      libLibrary = pkgs.stdenv.mkDerivation {
+        name = "haskell-lib-lib-build";
+        src = "${self}/src/lib/lib";
+        installPhase = ''
+          echo "<<<START INSTALL PHASE>>>"
+          mkdir -p "$out/lib"
+          cp -rf * "$out/lib"
+          rm "$out/lib/hie.yaml"
+          echo "<<<COMPLETE INSTALL PHASE>>>"
+        '';
+      };
     in
     {
       packages = {
-        inherit ghc;
+        inherit ghc libLibrary;
         neovim = neovim.packages.${system}.default;
         ranger = ranger.packages.${system}.default;
         rnixLsp = rnixLsp.defaultPackage.${system};
