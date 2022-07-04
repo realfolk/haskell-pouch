@@ -1,5 +1,9 @@
+{-# LANGUAGE UndecidableInstances #-}
+
 module Lib.Binary
-    ( decodeMaybe
+    ( GetBinary (..)
+    , PutBinary (..)
+    , decodeMaybe
     , decodeStrict
     , decodeStrictMaybe
     , decodeStrictOrFail
@@ -15,6 +19,20 @@ import qualified Data.ByteString.Lazy as LazyByteString
 import qualified Lib.Either           as Either
 import qualified Lib.Tuple            as Tuple
 
+-- * GetBinary Typeclass
+
+class GetBinary a where
+  getBinary :: Binary.Get a
+
+-- * PutBinary Typeclass
+
+class PutBinary a where
+  putBinary :: a -> Binary.Put
+
+-- * Helpers
+
+-- ** Strict Encoding/Decoding
+
 encodeStrict :: Binary a => a -> ByteString
 encodeStrict = LazyByteString.toStrict . Binary.encode
 
@@ -28,6 +46,8 @@ decodeStrictOrFail = bimap toStrict toStrict . Binary.decodeOrFail . LazyByteStr
 
 decodeStrictMaybe :: Binary a => ByteString -> Maybe a
 decodeStrictMaybe = fmap Tuple.third . Either.toMaybe . decodeStrictOrFail
+
+-- ** Lazy Encoding/Decoding
 
 decodeMaybe :: Binary a => LazyByteString.ByteString -> Maybe a
 decodeMaybe = fmap Tuple.third . Either.toMaybe . Binary.decodeOrFail
