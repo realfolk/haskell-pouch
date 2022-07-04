@@ -1,6 +1,6 @@
 {-# LANGUAGE OverloadedStrings #-}
 
-module Lib.Rational
+module Lib.Math.Rational
     ( Rational
     , denominator
     , numerator

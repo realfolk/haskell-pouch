@@ -1,10 +1,10 @@
 {-# LANGUAGE OverloadedStrings #-}
 
-module Test.Lib.RationalSpec
+module Test.Lib.Math.RationalSpec
     ( spec
     ) where
 
-import           Lib.Rational (toText, (%))
+import           Lib.Math.Rational (toText, (%))
 import           Test.Hspec
 
 spec :: Spec
