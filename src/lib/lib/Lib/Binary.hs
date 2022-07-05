@@ -8,14 +8,19 @@ module Lib.Binary
     , decodeStrictMaybe
     , decodeStrictOrFail
     , encodeStrict
+    , getWithIDAndGetterOrFail
+    , getWithIDOrFail
+    , getWithIDOrFail'
     ) where
 
+import           Control.Monad        (when)
 import           Data.Bifunctor       (bimap)
 import           Data.Binary          (Binary)
 import qualified Data.Binary          as Binary
 import           Data.Binary.Get      (ByteOffset)
 import           Data.ByteString      (ByteString)
 import qualified Data.ByteString.Lazy as LazyByteString
+import           Data.Word            (Word8)
 import qualified Lib.Either           as Either
 import qualified Lib.Tuple            as Tuple
 
@@ -30,6 +35,18 @@ class PutBinary a where
   putBinary :: a -> Binary.Put
 
 -- * Helpers
+
+getWithIDOrFail :: Binary a => Word8 -> Binary.Get a
+getWithIDOrFail expectID = getWithIDAndGetterOrFail expectID Binary.get
+
+getWithIDOrFail' :: GetBinary a => Word8 -> Binary.Get a
+getWithIDOrFail' expectID = getWithIDAndGetterOrFail expectID getBinary
+
+getWithIDAndGetterOrFail :: Word8 -> Binary.Get a -> Binary.Get a
+getWithIDAndGetterOrFail expectID getter = do
+  id' <- Binary.getWord8
+  when (id' /= expectID) $ fail $ "Invalid ID: Expected " <> show expectID <> ", but got " <> show id' <> "."
+  getter
 
 -- ** Strict Encoding/Decoding
 
