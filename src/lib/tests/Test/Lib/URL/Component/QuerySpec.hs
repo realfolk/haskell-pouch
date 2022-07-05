@@ -1,13 +1,13 @@
 {-# LANGUAGE OverloadedStrings #-}
 
-module Test.Lib.URL.QuerySpec
+module Test.Lib.URL.Component.QuerySpec
     ( spec
     ) where
 
-import qualified Data.Set      as Set
-import           Lib.URL.Query (Query)
-import qualified Lib.URL.Query as Query
-import qualified Network.Wai   as Wai
+import qualified Data.Set                as Set
+import           Lib.URL.Component.Query (Query)
+import qualified Lib.URL.Component.Query as Query
+import qualified Network.Wai             as Wai
 import           Test.Hspec
 
 -- * Main

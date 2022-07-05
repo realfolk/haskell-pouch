@@ -1,12 +1,12 @@
 {-# LANGUAGE OverloadedStrings #-}
 
-module Test.Lib.URL.Query.ItemSpec
+module Test.Lib.URL.Component.Query.ItemSpec
     ( spec
     ) where
 
-import           Lib.URL.Query.Item (Item)
-import qualified Lib.URL.Query.Item as Item
-import qualified Network.Wai        as Wai
+import           Lib.URL.Component.Query.Item (Item)
+import qualified Lib.URL.Component.Query.Item as Item
+import qualified Network.Wai                  as Wai
 import           Test.Hspec
 
 -- * Main
