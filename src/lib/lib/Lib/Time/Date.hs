@@ -15,6 +15,8 @@ module Lib.Time.Date
     , today
     ) where
 
+import           Data.Binary           (Binary)
+import qualified Data.Binary           as Binary
 import qualified Data.Text             as T
 import qualified Data.Time             as TimeExt
 import qualified Data.Time.Clock.POSIX as POSIXTime
@@ -31,6 +33,10 @@ data Date
 
 instance Ord Date where
   compare a b = compare (toLocalTime a) (toLocalTime b)
+
+instance Binary Date where
+  get = Date <$> Binary.get <*> Binary.get <*> Binary.get
+  put (Date years month days) = Binary.put years >> Binary.put month >> Binary.put days
 
 date = Date
 

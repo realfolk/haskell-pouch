@@ -10,9 +10,11 @@ module Lib.Time.Weekday
     , toText
     ) where
 
-import qualified Data.Text as T
-import qualified Data.Time as TimeExt
-import           Prelude   hiding (fromInteger, toInteger)
+import           Data.Binary (Binary)
+import qualified Data.Binary as Binary
+import qualified Data.Text   as T
+import qualified Data.Time   as TimeExt
+import           Prelude     hiding (fromInteger, toInteger)
 
 
 data Weekday = Monday | Tuesday | Wednesday | Thursday | Friday | Saturday | Sunday deriving
@@ -20,6 +22,27 @@ data Weekday = Monday | Tuesday | Wednesday | Thursday | Friday | Saturday | Sun
     , Eq
     , Show
     )
+
+instance Binary Weekday where
+  get = do
+    id' <- Binary.getWord8
+    return $ case id' of
+      0 -> Monday
+      1 -> Tuesday
+      2 -> Wednesday
+      3 -> Thursday
+      4 -> Friday
+      5 -> Saturday
+      6 -> Sunday
+  put month =
+    case month of
+      Monday    -> Binary.putWord8 0
+      Tuesday   -> Binary.putWord8 1
+      Wednesday -> Binary.putWord8 2
+      Thursday  -> Binary.putWord8 3
+      Friday    -> Binary.putWord8 4
+      Saturday  -> Binary.putWord8 5
+      Sunday    -> Binary.putWord8 6
 
 
 toText :: Weekday -> T.Text

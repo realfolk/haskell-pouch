@@ -1,5 +1,6 @@
 {-# LANGUAGE GeneralizedNewtypeDeriving #-}
 {-# LANGUAGE OverloadedStrings          #-}
+{-# LANGUAGE RecordWildCards            #-}
 
 module Lib.Time
     ( Days
@@ -59,6 +60,8 @@ module Lib.Time
     , utc
     ) where
 
+import           Data.Binary           (Binary)
+import qualified Data.Binary           as Binary
 import qualified Data.Fixed            as Fixed
 import qualified Data.Text             as T
 import qualified Data.Time             as Time
@@ -75,45 +78,89 @@ newtype Time
   = Time POSIXTime.POSIXTime
   deriving (Eq, Fractional, Num, Ord, Real, RealFrac, Show)
 
+instance Binary Time where
+  get = fromPicoseconds <$> Binary.get
+  put = Binary.put . toPicoseconds
+
 newtype Years
   = Years Integer
   deriving (Enum, Eq, Integral, Num, Ord, Real, Show)
+
+instance Binary Years where
+  get = Years <$> Binary.get
+  put (Years n) = Binary.put n
 
 newtype Weeks
   = Weeks Integer
   deriving (Enum, Eq, Integral, Num, Ord, Real, Show)
 
+instance Binary Weeks where
+  get = Weeks <$> Binary.get
+  put (Weeks n) = Binary.put n
+
 newtype Days
   = Days Integer
   deriving (Enum, Eq, Integral, Num, Ord, Real, Show)
+
+instance Binary Days where
+  get = Days <$> Binary.get
+  put (Days n) = Binary.put n
 
 newtype Hours
   = Hours Integer
   deriving (Enum, Eq, Integral, Num, Ord, Real, Show)
 
+instance Binary Hours where
+  get = Hours <$> Binary.get
+  put (Hours n) = Binary.put n
+
 newtype Minutes
   = Minutes Integer
   deriving (Enum, Eq, Integral, Num, Ord, Real, Show)
+
+instance Binary Minutes where
+  get = Minutes <$> Binary.get
+  put (Minutes n) = Binary.put n
 
 newtype Seconds
   = Seconds Integer
   deriving (Enum, Eq, Integral, Num, Ord, Real, Show)
 
+instance Binary Seconds where
+  get = Seconds <$> Binary.get
+  put (Seconds n) = Binary.put n
+
 newtype Milliseconds
   = Milliseconds Integer
   deriving (Enum, Eq, Integral, Num, Ord, Real, Show)
+
+instance Binary Milliseconds where
+  get = Milliseconds <$> Binary.get
+  put (Milliseconds n) = Binary.put n
 
 newtype Microseconds
   = Microseconds Integer
   deriving (Enum, Eq, Integral, Num, Ord, Real, Show)
 
+instance Binary Microseconds where
+  get = Microseconds <$> Binary.get
+  put (Microseconds n) = Binary.put n
+
 newtype Nanoseconds
   = Nanoseconds Integer
   deriving (Enum, Eq, Integral, Num, Ord, Real, Show)
 
+instance Binary Nanoseconds where
+  get = Nanoseconds <$> Binary.get
+  put (Nanoseconds n) = Binary.put n
+
 newtype Picoseconds
   = Picoseconds Integer
   deriving (Enum, Eq, Integral, Num, Ord, Real, Show)
+
+instance Binary Picoseconds where
+  get = Picoseconds <$> Binary.get
+  put (Picoseconds n) = Binary.put n
 
 -- * Current Time
 
@@ -129,6 +176,18 @@ newtype Zone
 
 instance Show Zone where
   show (Zone z) = show z
+
+instance Binary Zone where
+  get = Zone <$> Binary.get
+  put (Zone z) = Binary.put z
+
+instance Binary Time.TimeZone where
+  get = Time.TimeZone <$> Binary.get <*> Binary.get <*> Binary.get
+  put (Time.TimeZone {..}) = do
+    Binary.put timeZoneMinutes
+    Binary.put timeZoneSummerOnly
+    Binary.put timeZoneName
+
 
 utc :: Zone
 utc = Zone Time.utc
