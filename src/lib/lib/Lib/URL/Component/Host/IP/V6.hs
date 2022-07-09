@@ -17,8 +17,6 @@ module Lib.URL.Component.Host.IP.V6
     , unabbreviate
     ) where
 
-import qualified Basement.Numerical.Number  as Number
-import           Basement.Types.Word128     (Word128 (Word128))
 import           Control.Applicative        ((<|>))
 import           Control.Monad              (unless, void, when)
 import           Data.Binary                (Binary)
@@ -33,6 +31,7 @@ import qualified Data.Text.Lazy.Builder     as Builder
 import qualified Data.Text.Lazy.Builder.Int as Builder
 import           Data.Word                  (Word16, Word8)
 import qualified GHC.Bits                   as Bits
+import           Lib.Number.Word128         (Word128)
 import qualified Lib.Parsec                 as Parsec
 import           Lib.URL.Component.Internal (escapeText, unescapeText)
 import qualified Text.Parsec                as Parsec
@@ -48,11 +47,11 @@ instance Show Address where
   show = Text.unpack . toText False
 
 instance Binary Address where
-  put (Address (Word128 w0 w1)) = Binary.putWord8 0 >> Binary.put w0 >> Binary.put w1
+  put (Address w) = Binary.putWord8 0 >> Binary.put w
   get = do
     id' <- Binary.getWord8
     case id' of
-      0 -> Word128 <$> Binary.get <*> Binary.get <&> Address
+      0 -> Address <$> Binary.get
       _ -> fail "Invalid ID"
 
 -- ** Constructors
@@ -227,7 +226,7 @@ word128HexadectetIndexToInt index =
 getWord128Hexadectet :: Word128 -> Word128HexadectetIndex -> Hexadectet
 getWord128Hexadectet n index =
   fromInteger
-    $ Number.toInteger
+    $ toInteger
     $ Bits.shift
         (Bits.shift n ((word128HexadectetIndexToInt index) * hexadectetBitSize))
         (word128BitSize * (-1) + hexadectetBitSize)
