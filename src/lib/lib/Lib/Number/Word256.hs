@@ -14,7 +14,10 @@ import           Foreign.Storable          (Storable)
 -- to avoid any typeclass instance collisions.
 newtype Word256
   = Word256 Word256.Word256
-  deriving (Bits, Bounded, Enum, Eq, Num, Ord, Show, Storable)
+  deriving (Bits, Bounded, Enum, Eq, Num, Ord, Storable)
+
+instance Show Word256 where
+  show (Word256 w) = show w
 
 instance Binary Word256 where
   get = do
@@ -31,4 +34,3 @@ instance Real Word256 where
 instance Integral Word256 where
   toInteger (Word256 w) = Number.toInteger w
   quotRem (Word256 a) (Word256 b) = (Word256 (Word256.quot a b), Word256 (Word256.rem a b))
-

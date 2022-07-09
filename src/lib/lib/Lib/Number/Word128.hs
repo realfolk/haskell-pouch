@@ -14,7 +14,10 @@ import           Foreign.Storable          (Storable)
 -- to avoid any typeclass instance collisions.
 newtype Word128
   = Word128 Word128.Word128
-  deriving (Bits, Bounded, Enum, Eq, Num, Ord, Show, Storable)
+  deriving (Bits, Bounded, Enum, Eq, Num, Ord, Storable)
+
+instance Show Word128 where
+  show (Word128 w) = show w
 
 instance Binary Word128 where
   get = do
