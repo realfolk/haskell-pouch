@@ -3,6 +3,7 @@
 
 module Lib.URL.Component.Path
     ( Path
+    , Section
     , cons
     , fromList
     , fromText

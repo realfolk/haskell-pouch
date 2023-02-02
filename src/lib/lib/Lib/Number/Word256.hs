@@ -19,6 +19,8 @@ newtype Word256
 instance Show Word256 where
   show (Word256 w) = show w
 
+-- TODO maybe convert to/from an Integer to interface
+-- with Binary values.
 instance Binary Word256 where
   get = do
     a <- Binary.get
