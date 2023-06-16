@@ -1,0 +1,4 @@
+packages:
+  ./pouch.cabal
+
+import: https://www.stackage.org/lts-20.12/cabal.config
