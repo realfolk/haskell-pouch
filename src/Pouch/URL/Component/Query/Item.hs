@@ -12,23 +12,25 @@
 
 module Pouch.URL.Component.Query.Item
     ( Item
+    , escape
     , fromNetworkQueryItem
     , fromText
     , parser
     , toNetworkQueryItem
     , toText
+    , unescape
     ) where
 
-import           Control.Applicative        ((<|>))
-import           Data.Bifunctor             (bimap)
-import           Data.Text                  (Text)
-import           Data.Text.Encoding         (decodeUtf8, encodeUtf8)
+import           Control.Applicative          ((<|>))
+import           Data.Bifunctor               (bimap)
+import           Data.Text                    (Text)
+import           Data.Text.Encoding           (decodeUtf8, encodeUtf8)
+import qualified Network.HTTP.Types.URI       as URI
 import qualified Pouch.Parsec                 as Parsec
 import           Pouch.URL.Component.Internal (componentTextParser1, escapeText,
-                                             unescapeText)
-import qualified Network.HTTP.Types.URI     as URI
-import qualified Text.Parsec                as Parsec
-import           Text.Parsec.Text           (Parser)
+                                               unescapeText)
+import qualified Text.Parsec                  as Parsec
+import           Text.Parsec.Text             (Parser)
 
 -- * Item
 

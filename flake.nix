@@ -22,80 +22,24 @@
     }:
     flakeUtils.lib.eachDefaultSystem (system:
     let
-      # HELPERS
-
-      config = {
-        srcDir = "$PROJECT/src";
-        buildDir = "$PROJECT/.build";
-        buildArtifactsDir = "$PROJECT/.build.artifacts";
-      };
-
-      haskellDependencies = p: [
-        p.aeson
-        p.async
-        p.base58-bytestring
-        p.base64-bytestring
-        p.basement
-        p.bcrypt
-        p.criterion
-        p.cryptonite
-        p.dotenv
-        p.envy
-        p.haddock
-        p.hspec
-        p.http-client
-        p.http-client-tls
-        p.http-types
-        p.HUnit
-        p.lmdb
-        p.microlens
-        p.microstache
-        p.mime-types
-        p.network-uri
-        p.optparse-applicative
-        p.shakespeare
-        p.smtp-mail
-        p.strict-concurrency
-        p.tasty
-        p.tasty-hunit
-        p.tasty-hunit-adapter
-        p.tasty-quickcheck
-        p.tasty-smallcheck
-        p.temporary
-        p.text-trie
-        p.tls
-        p.tls-debug
-        p.turtle
-        p.uuid
-        p.wai
-        p.warp
-        p.warp-tls
-      ];
-
       pkgs = nixpkgs.legacyPackages.${system};
       haskellPkgs = haskellPackages.packages.${system};
-      ghc = haskellPkgs.ghcWithPackages haskellDependencies;
+      ghc = haskellPkgs.ghc;
     in
     {
-      packages = {
-        inherit ghc;
-        neovim = neovim.packages.${system}.default;
-        ranger = ranger.packages.${system}.default;
-        rnixLsp = rnixLsp.defaultPackage.${system};
-        haskellLanguageServer = haskellPkgs.haskell-language-server;
-        hspecDiscover = haskellPkgs.hspec-discover;
-        cabalInstall = haskellPkgs.cabal-install;
-      };
-
       devShells.default = pkgs.mkShell {
-        buildInputs = builtins.concatLists [
-          (builtins.attrValues self.packages.${system})
-          [
-            pkgs.silver-searcher # ag
-            pkgs.fzf
-            pkgs.openssl
-            pkgs.inotifyTools
-          ]
+        buildInputs = [
+          pkgs.silver-searcher # ag
+          pkgs.fzf
+          pkgs.openssl
+          pkgs.inotifyTools
+          ghc
+          neovim.packages.${system}.default
+          ranger.packages.${system}.default
+          rnixLsp.defaultPackage.${system}
+          haskellPkgs.haskell-language-server
+          haskellPkgs.hspec-discover
+          haskellPkgs.cabal-install
         ];
         shellHook = pkgs.lib.concatStrings [
           (
