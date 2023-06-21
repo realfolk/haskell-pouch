@@ -4,9 +4,9 @@ module Test.Pouch.URL.Component.Query.ItemSpec
     ( spec
     ) where
 
+import qualified Network.Wai                    as Wai
 import           Pouch.URL.Component.Query.Item (Item)
 import qualified Pouch.URL.Component.Query.Item as Item
-import qualified Network.Wai                  as Wai
 import           Test.Hspec
 
 -- * Main
@@ -29,8 +29,8 @@ mockEscapedItem = ("key%26%2F", "value%40%26")
 fromNetworkQueryItemSpec :: Spec
 fromNetworkQueryItemSpec =
   describe "fromNetworkQueryItem" $ do
-    it "does not unescape the key or value" $ do
-      Item.fromNetworkQueryItem ("key%26", Just "value%40") `shouldBe` ("key%26", "value%40")
+    it "unescapes the key and value" $ do
+      Item.fromNetworkQueryItem ("key%26", Just "value%40") `shouldBe` ("key&", "value@")
     it "does not escape the key or value" $ do
       Item.fromNetworkQueryItem ("key&", Just "value@") `shouldBe` ("key&", "value@")
     context "when the value is Nothing" $ do
@@ -43,10 +43,8 @@ fromNetworkQueryItemSpec =
 toNetworkQueryItemSpec :: Spec
 toNetworkQueryItemSpec =
   describe "toNetworkQueryItem" $ do
-    it "does not unescape the key or value" $ do
-      Item.toNetworkQueryItem ("key%26", "value%40") `shouldBe` ("key%26", Just "value%40")
-    it "does not escape the key or value" $ do
-      Item.toNetworkQueryItem ("key&", "value@") `shouldBe` ("key&", Just "value@")
+    it "escapes the key and value" $ do
+      Item.toNetworkQueryItem ("key&", "value@") `shouldBe` ("key%26", Just "value%40")
     context "when the value is empty" $ do
       it "returns a network query item with a Nothing value" $ do
         Item.toNetworkQueryItem ("key", "") `shouldBe` ("key", Nothing)
