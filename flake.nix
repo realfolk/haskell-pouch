@@ -27,6 +27,8 @@
       ghc = haskellPkgs.ghc;
     in
     {
+      packages.default = haskellPkgs.callCabal2nix "pouch" self { };
+
       devShells.default = pkgs.mkShell {
         buildInputs = [
           pkgs.silver-searcher # ag
