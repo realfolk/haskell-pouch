@@ -16,6 +16,7 @@ import           Prelude     hiding (fromInteger, toInteger)
 data Month = January | February | March | April | May | June | July | August | September | October | November | December deriving
     ( Enum
     , Eq
+    , Ord
     , Show
     )
 
