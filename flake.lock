@@ -18,21 +18,6 @@
       }
     },
     "flakeUtils": {
-      "locked": {
-        "lastModified": 1656065134,
-        "narHash": "sha256-oc6E6ByIw3oJaIyc67maaFcnjYOz1mMcOtHxbEf9NwQ=",
-        "owner": "numtide",
-        "repo": "flake-utils",
-        "rev": "bee6a7250dd1b01844a2de7e02e4df7d8a0a206c",
-        "type": "github"
-      },
-      "original": {
-        "owner": "numtide",
-        "repo": "flake-utils",
-        "type": "github"
-      }
-    },
-    "flakeUtils_2": {
       "inputs": {
         "systems": "systems"
       },
@@ -84,11 +69,11 @@
       },
       "locked": {
         "dir": "lib/projects/haskell/packages/ghc-9.2",
-        "lastModified": 1697651167,
-        "narHash": "sha256-+1x2j3se2sS/Ayvz3NwmHhGu6dlCoAAwcpQ1jgU26jA=",
+        "lastModified": 1697651444,
+        "narHash": "sha256-rN40ZC89HCu2R8pXoHoH+lwCd09zr97XD/UXLWhGkiA=",
         "owner": "realfolk",
         "repo": "nix",
-        "rev": "3107696f45e39262b2c15faf0a3c2e3a39077fb2",
+        "rev": "26006e294688de0c3509a020afde801d83a418c4",
         "type": "github"
       },
       "original": {
@@ -153,51 +138,23 @@
         "type": "github"
       }
     },
-    "nixpkgs_2": {
-      "locked": {
-        "lastModified": 1685566663,
-        "narHash": "sha256-btHN1czJ6rzteeCuE/PNrdssqYD2nIA4w48miQAFloM=",
-        "owner": "nixos",
-        "repo": "nixpkgs",
-        "rev": "4ecab3273592f27479a583fb6d975d4aba3486fe",
-        "type": "github"
-      },
-      "original": {
-        "owner": "nixos",
-        "ref": "23.05",
-        "repo": "nixpkgs",
-        "type": "github"
-      }
-    },
-    "nixpkgs_3": {
-      "locked": {
-        "lastModified": 1656753965,
-        "narHash": "sha256-BCrB3l0qpJokOnIVc3g2lHiGhnjUi0MoXiw6t1o8H1E=",
-        "owner": "nixos",
-        "repo": "nixpkgs",
-        "rev": "0ea7a8f1b939d74e5df8af9a8f7342097cdf69eb",
-        "type": "github"
-      },
-      "original": {
-        "owner": "nixos",
-        "ref": "nixos-unstable",
-        "repo": "nixpkgs",
-        "type": "github"
-      }
-    },
     "realfolkNix": {
       "inputs": {
-        "flakeUtils": "flakeUtils_2",
+        "flakeUtils": [
+          "flakeUtils"
+        ],
         "haskellPackages": "haskellPackages",
-        "nixpkgs": "nixpkgs_2",
+        "nixpkgs": [
+          "nixpkgs"
+        ],
         "rnixLsp": "rnixLsp"
       },
       "locked": {
-        "lastModified": 1697651444,
-        "narHash": "sha256-rN40ZC89HCu2R8pXoHoH+lwCd09zr97XD/UXLWhGkiA=",
+        "lastModified": 1698351244,
+        "narHash": "sha256-RR+xztItnlya0/5eoswJ4WrFFQkMCspbNkINHRan69Y=",
         "owner": "realfolk",
         "repo": "nix",
-        "rev": "26006e294688de0c3509a020afde801d83a418c4",
+        "rev": "b6bce74d19e63041283ad4da8fcd201b33c7687e",
         "type": "github"
       },
       "original": {
@@ -209,8 +166,14 @@
     "rnixLsp": {
       "inputs": {
         "naersk": "naersk",
-        "nixpkgs": "nixpkgs_3",
-        "utils": "utils"
+        "nixpkgs": [
+          "realfolkNix",
+          "nixpkgs"
+        ],
+        "utils": [
+          "realfolkNix",
+          "flakeUtils"
+        ]
       },
       "locked": {
         "lastModified": 1669555118,
@@ -262,21 +225,6 @@
         "owner": "realfolk",
         "repo": "text-trie",
         "rev": "fab16265b5c17e158820ed0356cd88eb4d34c2ed",
-        "type": "github"
-      }
-    },
-    "utils": {
-      "locked": {
-        "lastModified": 1656928814,
-        "narHash": "sha256-RIFfgBuKz6Hp89yRr7+NR5tzIAbn52h8vT6vXkYjZoM=",
-        "owner": "numtide",
-        "repo": "flake-utils",
-        "rev": "7e2a3b3dfd9af950a856d66b0a7d01e3c18aa249",
-        "type": "github"
-      },
-      "original": {
-        "owner": "numtide",
-        "repo": "flake-utils",
         "type": "github"
       }
     }
